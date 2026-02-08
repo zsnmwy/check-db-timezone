@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma/business-client"
+}
+
+model Order {
+  id            Int     @id @default(autoincrement())
+  createdAtMs   BigInt  @map("created_at_ms")
+  paidAtMs      BigInt? @map("paid_at_ms")
+  completedAtMs BigInt? @map("completed_at_ms")
+
+  @@map("orders")
+}
+
+model DeliverySlot {
+  id               Int    @id @default(autoincrement())
+  appointmentLocal String @map("appointment_local")
+  appointmentTz    String @map("appointment_tz")
+  createdAtMs      BigInt @map("created_at_ms")
+
+  @@map("delivery_slots")
+}

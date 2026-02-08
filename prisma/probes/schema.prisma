@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/prisma/probe-client"
+}
+
+model PrismaProbe {
+  id          Int      @id @default(autoincrement())
+  label       String   @default("")
+  tsWithoutTz DateTime @map("ts_without_tz") @db.Timestamp(6)
+  tsWithTz    DateTime @map("ts_with_tz") @db.Timestamptz(6)
+  epochMs     BigInt   @map("epoch_ms")
+
+  @@map("prisma_probe")
+}

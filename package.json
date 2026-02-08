@@ -1,0 +1,39 @@
+{
+  "name": "check-db-timezone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PostgreSQL 时间治理系统验证工程",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "runtime-check": "tsx src/time/runtime-check.ts",
+    "check:time-policy": "bash scripts/check-time-policy.sh",
+    "prisma:generate": "DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma generate --schema prisma/schema.prisma && DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma generate --schema prisma/probes/schema.prisma",
+    "db:push": "DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma db push --schema prisma/schema.prisma --accept-data-loss",
+    "test:once": "vitest run",
+    "test": "npm run prisma:generate && npm run db:push && npm run test:once",
+    "test:tz-matrix": "cross-env TZ=UTC npm run test && cross-env TZ=Asia/Shanghai npm run test",
+    "ci": "npm run check:time-policy && npm run lint && npm run runtime-check && npm run test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.18.0",
+    "prisma": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.0"
+  }
+}
