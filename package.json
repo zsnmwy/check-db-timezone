@@ -10,7 +10,7 @@
     "check:time-policy": "bash scripts/check-time-policy.sh",
     "prisma:generate": "DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma generate --schema prisma/schema.prisma && DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma generate --schema prisma/probes/schema.prisma",
     "db:push": "DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:55432/check_db_timezone} prisma db push --schema prisma/schema.prisma --accept-data-loss",
-    "test:once": "vitest run",
+    "test:once": "vitest run --no-file-parallelism",
     "test": "npm run prisma:generate && npm run db:push && npm run test:once",
     "test:tz-matrix": "cross-env TZ=UTC npm run test && cross-env TZ=Asia/Shanghai npm run test",
     "ci": "npm run check:time-policy && npm run lint && npm run runtime-check && npm run test"
